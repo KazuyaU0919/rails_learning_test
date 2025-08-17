@@ -22,14 +22,14 @@ gem "tailwindcss-rails"
 gem "tailwindcss-ruby"
 
 # 認証の土台
-gem 'bcrypt'                           # has_secure_password 用
-gem 'omniauth'
-gem 'omniauth-rails_csrf_protection'   # CSRF対策（必須）
-gem 'omniauth-google-oauth2'
-gem 'omniauth-github'
+gem "bcrypt"                           # has_secure_password 用
+gem "omniauth"
+gem "omniauth-rails_csrf_protection"   # CSRF対策（必須）
+gem "omniauth-google-oauth2"
+gem "omniauth-github"
 
 # 開発支援
-gem 'dotenv-rails', groups: %i[development test]     # 環境変数を .env で
+gem "dotenv-rails", groups: %i[development test]     # 環境変数を .env で
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
