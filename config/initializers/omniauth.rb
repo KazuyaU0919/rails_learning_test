@@ -1,13 +1,13 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :google_oauth2,
-           ENV.fetch('GOOGLE_CLIENT_ID', nil),
-           ENV.fetch('GOOGLE_CLIENT_SECRET', nil),
-           prompt: 'select_account' # 複数アカウント持ち向け
+           ENV.fetch("GOOGLE_CLIENT_ID", nil),
+           ENV.fetch("GOOGLE_CLIENT_SECRET", nil),
+           prompt: "select_account" # 複数アカウント持ち向け
 
   provider :github,
-           ENV.fetch('GITHUB_CLIENT_ID', nil),
-           ENV.fetch('GITHUB_CLIENT_SECRET', nil),
-           scope: 'user:email'
+           ENV.fetch("GITHUB_CLIENT_ID", nil),
+           ENV.fetch("GITHUB_CLIENT_SECRET", nil),
+           scope: "user:email"
 end
 
 # GET でコールバックできるように（Rails7 以降の推奨設定）

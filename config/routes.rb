@@ -11,6 +11,6 @@ Rails.application.routes.draw do
   resources :password_resets, only: %i[new create edit update]  # パス再設定用
 
   # OmniAuth
-  get '/auth/:provider/callback', to: 'omniauth_callbacks#create'
-  get '/auth/failure',            to: 'omniauth_callbacks#failure'
+  get "/auth/:provider/callback", to: "omniauth_callbacks#create"
+  get "/auth/failure",            to: "omniauth_callbacks#failure"
 end
