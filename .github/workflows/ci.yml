@@ -66,9 +66,9 @@ jobs:
 
     env:
       RAILS_ENV: test
-      PGHOST: localhost
-      PGUSER: postgres
-      PGPASSWORD: postgres
+      DB_HOST: 127.0.0.1
+      DB_USER: postgres
+      DB_PASSWORD: postgres
       # DATABASE_URL を使う場合は上の PG* を消してこちらを使ってもOK
       # DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
 
