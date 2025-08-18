@@ -23,7 +23,7 @@ class CreateUsers < ActiveRecord::Migration[8.0]
 
     # ▼ DBレベルの一意制約
     # 1) 外部ログイン：provider+uid の組み合わせは一意
-    add_index :users, [:provider, :uid], unique: true, name: "index_users_on_provider_uid"
+    add_index :users, [ :provider, :uid ], unique: true, name: "index_users_on_provider_uid"
 
     # 2) 通常ログイン：email一意（外部ログイン行は対象外）
     add_index :users,
