@@ -13,6 +13,6 @@ Rails.application.routes.draw do
   # OmniAuth
   get "/auth/:provider", to: "omni_auth#passthru", as: :auth,
                          constraints: { provider: /(google_oauth2|github)/ }
-  get "/auth/:provider/callback", to: "omni_auth#callback"
-  get "/auth/failure",            to: "omni_auth#failure"
+  get "/auth/:provider/callback", to: "omni_auth#callback", as: :omni_auth_callback
+  get "/auth/failure",            to: "omni_auth#failure", as: :omni_auth_failure
 end
