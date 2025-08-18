@@ -1,21 +1,26 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  name: MyString
-  email: MyString
-  password_digest: MyString
-  provider: MyString
-  uid: MyString
-  reset_password_token: MyString
-  reset_password_sent_at: 2025-08-18 13:03:57
+# 通常ログインユーザ（email UNIQUE は provider が NULL のときのみ効く）
+normal:
+  name: Normal
+  email: normal@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
+  provider:
+  uid:
   admin: false
 
-two:
-  name: MyString
-  email: MyString
-  password_digest: MyString
-  provider: MyString
-  uid: MyString
-  reset_password_token: MyString
-  reset_password_sent_at: 2025-08-18 13:03:57
+# Google ログインユーザ（provider+uid をユニークに）
+google_user:
+  name: Google Taro
+  email: taro@example.com
+  password_digest: <%= BCrypt::Password.create('password') %> # 使わないなら空でも可
+  provider: google_oauth2
+  uid: 12345
   admin: false
+
+# GitHub ログインユーザ（違う uid を付ける）
+github_user:
+  name: Octo
+  email: octo@example.com
+  password_digest: <%= BCrypt::Password.create('password') %>
+  provider: github
+  uid: 99999
+  admin: true
