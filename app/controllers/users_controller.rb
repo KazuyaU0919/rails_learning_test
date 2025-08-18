@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :require_guest!, only: %i[new create]
+
   def new
     @user = User.new
   end
