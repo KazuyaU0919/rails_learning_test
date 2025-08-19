@@ -1,5 +1,12 @@
 # config/routes.rb
 Rails.application.routes.draw do
+  get "pre_codes/index"
+  get "pre_codes/new"
+  get "pre_codes/create"
+  get "pre_codes/show"
+  get "pre_codes/edit"
+  get "pre_codes/update"
+  get "pre_codes/destroy"
   get "tests/index"
   root "tests#index"
 

@@ -28,6 +28,9 @@ gem "omniauth-rails_csrf_protection"   # CSRF対策（必須）
 gem "omniauth-google-oauth2"
 gem "omniauth-github"
 
+# ページネーション
+gem "kaminari"
+
 # 開発支援
 gem "dotenv-rails", groups: %i[development test]     # 環境変数を .env で
 
