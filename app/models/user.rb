@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  # ---------- アソシエーション ----------
+  has_many :pre_codes, dependent: :destroy
+
   # bcrypt
   has_secure_password validations: false
 
