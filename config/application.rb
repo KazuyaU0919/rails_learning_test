@@ -15,7 +15,7 @@ module RailsLearningTest
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
-    config.active_job.queue_adapter = :async # or :sidekiq 等
+    config.active_job.queue_adapter = :inline # or :sidekiq 等
 
     config.generators do |g|
       g.test_framework :rspec,
