@@ -31,6 +31,9 @@ gem "omniauth-github"
 # ページネーション
 gem "kaminari"
 
+# 検索機能
+gem "ransack"
+
 # 開発支援
 gem "dotenv-rails", groups: %i[development test]     # 環境変数を .env で
 
