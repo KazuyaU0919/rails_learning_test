@@ -11,8 +11,7 @@ class PreCodesController < ApplicationController
   end
 
   # GET /pre_codes/:id
-  def show
-  end
+  def show; end
 
   # GET /pre_codes/new
   def new
@@ -30,8 +29,7 @@ class PreCodesController < ApplicationController
   end
 
   # GET /pre_codes/:id/edit
-  def edit
-  end
+  def edit; end
 
   # PATCH/PUT /pre_codes/:id
   def update
