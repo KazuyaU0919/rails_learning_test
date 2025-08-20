@@ -17,11 +17,14 @@ Rails.application.routes.draw do
     get "(page/:page)", action: :index, on: :collection, as: "", constraints: { page: /\d+/ }
   end
 
-  resources :pre_codes, concerns: :paginatable
-  # 将来的に使うルート
-  # resources :code_libraries, only: %i[index show]
-  # resources :likes,        only: %i[create destroy]
-  # resources :used_codes,   only: %i[create]
+  resources :pre_codes, concerns: :paginatable          # concern :paginatable do ~ endより後ろに配置する
+
+  # Code Library機能
+  resources :code_libraries, only: %i[index show], concerns: :paginatable
+
+  # 非同期用（シンプルな REST）
+  resources :likes,      only: %i[create destroy]
+  resources :used_codes, only: %i[create]
 
   # OmniAuth
   get "/auth/:provider", to: "omni_auth#passthru", as: :auth,
