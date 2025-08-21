@@ -21,10 +21,16 @@ Rails.application.routes.draw do
 
   # Code Library機能
   resources :code_libraries, only: %i[index show], concerns: :paginatable
-
-  # 非同期用（シンプルな REST）
   resources :likes,      only: %i[create destroy]
   resources :used_codes, only: %i[create]
+
+  # Code Editor
+  # root "editor#index"
+  resource :editor, only: %i[index create]
+  get "/pre_codes/:id/body",
+      to: "editor#pre_code_body",
+      as: :pre_code_body,
+      constraints: { id: /\d+/ }
 
   # OmniAuth
   get "/auth/:provider", to: "omni_auth#passthru", as: :auth,
