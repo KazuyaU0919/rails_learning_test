@@ -1,7 +1,6 @@
 # config/routes.rb
 Rails.application.routes.draw do
   get "tests/index"
-  root "tests#index"
 
   # Render のヘルスチェック用
   get "up" => "rails/health#show", as: :rails_health_check
@@ -25,8 +24,9 @@ Rails.application.routes.draw do
   resources :used_codes, only: %i[create]
 
   # Code Editor
-  # root "editor#index"
-  resource :editor, only: %i[index create]
+  root "editor#index"
+  get  "/editor", to: "editor#index",  as: :editor
+  post "/editor", to: "editor#create"
   get "/pre_codes/:id/body",
       to: "editor#pre_code_body",
       as: :pre_code_body,

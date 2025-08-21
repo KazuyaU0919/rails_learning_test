@@ -1,10 +1,14 @@
-require 'rails_helper'
+# spec/requests/editor_routes_spec.rb
+require "rails_helper"
 
-RSpec.describe "Editors", type: :request do
-  describe "GET /index" do
-    it "returns http success" do
-      get "/editor/index"
-      expect(response).to have_http_status(:success)
-    end
+RSpec.describe "Editor routing", type: :request do
+  it "GET / returns 200" do
+    get root_path
+    expect(response).to have_http_status(:ok).or have_http_status(:no_content)
+  end
+
+  it "GET /pre_codes/:id/body returns 200" do
+    get pre_code_body_path(1)
+    expect(response).to have_http_status(:ok)
   end
 end
