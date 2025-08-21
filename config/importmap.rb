@@ -12,7 +12,7 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 
 # ----- axios（HTTP 通信ライブラリ） -----
-pin "axios", to: "https://cdn.jsdelivr.net/npm/axios@1.7.2/+esm"
+pin "axios", to: "https://cdn.jsdelivr.net/npm/axios@1.8.2/+esm"
 
 # ----- CodeMirror 6 minimal set -----
 # 状態管理
