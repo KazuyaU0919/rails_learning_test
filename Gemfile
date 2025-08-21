@@ -37,6 +37,9 @@ gem "ransack"
 # 開発支援
 gem "dotenv-rails", groups: %i[development test]     # 環境変数を .env で
 
+# HTTPクライアント
+gem "httparty"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
