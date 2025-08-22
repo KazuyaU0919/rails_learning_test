@@ -1,9 +1,14 @@
+# spec/factories/book_sections.rb
 FactoryBot.define do
   factory :book_section do
-    book { nil }
-    heading { "MyString" }
-    content { "MyText" }
-    is_free { false }
-    position { 1 }
+    association :book
+    sequence(:heading) { |n| "Section #{n}" }
+    content            { "<p>body</p>" }
+    is_free            { false }
+    sequence(:position) { |n| n }
+
+    trait :free do
+      is_free { true }
+    end
   end
 end

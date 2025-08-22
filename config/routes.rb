@@ -1,5 +1,8 @@
 # config/routes.rb
 Rails.application.routes.draw do
+  get "book_sections/show"
+  get "books/index"
+  get "books/show"
   get "tests/index"
 
   # Render のヘルスチェック用
