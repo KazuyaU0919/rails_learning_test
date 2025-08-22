@@ -38,8 +38,12 @@ class EditorController < ApplicationController
       token:  result["token"] # デバッグ/将来の参照用
     }
   rescue Judge0::Error => e
-    # Judge0 側での失敗は 502 相当
-    render json: { error: e.message }, status: :bad_gateway
+    # メッセージ内に "HTTP 4xx" が含まれていれば、そのコードで返す
+    if (m = e.message.match(/HTTP\s+(\d{3})/))
+      render json: { error: e.message }, status: m[1].to_i
+    else
+      render json: { error: e.message }, status: :bad_gateway
+    end
   end
 
   # GET /pre_codes/:id/body

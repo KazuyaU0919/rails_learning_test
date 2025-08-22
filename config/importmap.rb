@@ -23,8 +23,11 @@ pin "@codemirror/view",   to: "https://esm.sh/@codemirror/view@6"
 pin "@codemirror/language", to: "https://esm.sh/@codemirror/language@6"
 # JavaScript サポート
 pin "@codemirror/lang-javascript", to: "https://esm.sh/@codemirror/lang-javascript@6"
-# Ruby（CM6 公式パッケージは未提供のため、CM5 の legacy-modes を利用）
-pin "@codemirror/legacy-modes/ruby", to: "https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/ruby/ruby.js"
+# CM5 legacy Ruby mode
+pin "@codemirror/legacy-modes/mode/ruby",
+    to: "https://cdn.jsdelivr.net/npm/@codemirror/legacy-modes@6.3.3/mode/ruby.js"
 
 # ダークテーマ
 pin "@codemirror/theme-one-dark", to: "https://esm.sh/@codemirror/theme-one-dark@6"
+# ハイライト（tags / HighlightStyle の提供元）
+pin "@lezer/highlight", to: "https://esm.sh/@lezer/highlight@1/es2022/highlight.mjs"
