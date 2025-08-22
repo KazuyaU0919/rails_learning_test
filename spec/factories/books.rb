@@ -1,6 +1,7 @@
+# spec/factories/books.rb
 FactoryBot.define do
   factory :book do
-    title { "MyString" }
-    description { "MyText" }
+    sequence(:title)      { |n| "Rails Book #{n}" }
+    description           { "This is a sample book." }
   end
 end
