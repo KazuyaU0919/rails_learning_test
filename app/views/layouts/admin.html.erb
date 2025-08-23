@@ -35,6 +35,7 @@
           <%= link_to "Dashboard", admin_root_path %>
           <%= link_to "Books",     admin_books_path %>
           <%= link_to "Sections",  admin_book_sections_path %>
+          <%= link_to "Logout", admin_session_path, data: { turbo_method: :delete } %>
 
           <% if current_user&.admin? %>
             <%= button_to "Logout",
@@ -52,7 +53,7 @@
 
     <!-- メイン -->
     <main class="mx-auto max-w-5xl px-4 py-6">
-      <%= render "shared/flash" if lookup_context.exists?("shared/flash") %>
+      <%= render "shared/flash" %>
       <%= yield %>
     </main>
   </body>
