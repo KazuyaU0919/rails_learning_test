@@ -1,8 +1,5 @@
 # config/routes.rb
 Rails.application.routes.draw do
-  get "book_sections/show"
-  get "books/index"
-  get "books/show"
   get "tests/index"
 
   # Render のヘルスチェック用
@@ -38,6 +35,15 @@ Rails.application.routes.draw do
   # Rails Books
   resources :books, only: %i[index show] do
     resources :sections, only: :show, controller: :book_sections
+  end
+
+  # 管理画面
+  namespace :admin do
+    root "dashboards#index"
+
+    resource  :session,   only: %i[new create destroy]
+    resources :books
+    resources :book_sections, except: %i[show]
   end
 
   # OmniAuth
