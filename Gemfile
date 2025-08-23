@@ -34,11 +34,12 @@ gem "kaminari"
 # 検索機能
 gem "ransack"
 
-# 開発支援
-gem "dotenv-rails", groups: %i[development test]     # 環境変数を .env で
-
 # HTTPクライアント
 gem "httparty"
+
+# ActiveStorage関連
+gem "image_processing", "~> 1.12"  # ActiveStorageで画像のリサイズやサムネイル生成を行うGem
+gem "mini_magick"                  # 画像処理ライブラリImageMagickのRubyラッパー
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -70,15 +71,22 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
+  # RSpec
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "faker"
   gem "shoulda-matchers"   # モデル検証が楽になる（任意）
+
+  # 開発支援
+  gem "dotenv-rails"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # N+1 クエリ検出・不要 eager load 警告（開発支援用）
+  gem "bullet"
 end
 
 group :test do
