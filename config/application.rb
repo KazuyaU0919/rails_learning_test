@@ -17,6 +17,7 @@ module RailsLearningTest
     config.autoload_lib(ignore: %w[assets tasks])
     config.active_job.queue_adapter = :inline # or :sidekiq 等
     config.i18n.default_locale = :ja
+    config.active_storage.variant_processor = :vips
 
     config.generators do |g|
       g.test_framework :rspec,
