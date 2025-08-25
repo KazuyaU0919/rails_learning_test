@@ -1,5 +1,10 @@
 # config/routes.rb
 Rails.application.routes.draw do
+  # 静的ページ
+  get "help",    to: "static_pages#help"
+  get "terms",   to: "static_pages#terms"
+  get "privacy", to: "static_pages#privacy"
+  get "contact", to: "static_pages#contact"
   get "tests/index"
 
   # Render のヘルスチェック用
