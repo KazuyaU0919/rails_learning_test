@@ -41,6 +41,9 @@ gem "httparty"
 gem "image_processing", "~> 1.12"  # ActiveStorageで画像のリサイズやサムネイル生成を行うGem
 gem "mini_magick"                  # 画像処理ライブラリImageMagickのRubyラッパー
 
+# パンくず機能
+gem "gretel"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
