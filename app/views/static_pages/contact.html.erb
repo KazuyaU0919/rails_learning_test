@@ -9,7 +9,7 @@
 
 <div class="bg-white rounded-xl shadow p-4 overflow-hidden">
   <iframe
-    src="<%= ENV.fetch('GOOGLE_FORM_URL') %>"
+    src="<%= ENV.fetch('GOOGLE_FORM_URL', 'https://example.com/dummy-form') %>"
     class="w-full border-0"
     style="min-height: 1750px; height: 95vh;"
     loading="lazy"
