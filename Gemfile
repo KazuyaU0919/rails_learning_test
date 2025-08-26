@@ -44,6 +44,9 @@ gem "mini_magick"                  # 画像処理ライブラリImageMagickのRu
 # パンくず機能
 gem "gretel"
 
+# アイコン
+gem "heroicon-rails"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

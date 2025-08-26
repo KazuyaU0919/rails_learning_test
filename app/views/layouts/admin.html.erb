@@ -35,7 +35,6 @@
           <%= link_to "Dashboard", admin_root_path %>
           <%= link_to "Books",     admin_books_path %>
           <%= link_to "Sections",  admin_book_sections_path %>
-          <%= link_to "Logout", admin_session_path, data: { turbo_method: :delete } %>
 
           <% if current_user&.admin? %>
             <%= button_to "Logout",
