@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :pre_codes, dependent: :destroy
   has_many :likes,      dependent: :destroy
   has_many :used_codes, dependent: :destroy
+  has_many :authentications, dependent: :destroy
 
   # bcrypt
   has_secure_password validations: false
@@ -15,10 +16,12 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 50 }
 
   # 通常ログイン（provider が空のとき）
-  with_options if: -> { provider.blank? } do
-    validates :email, presence: true, length: { maximum: 255 },
-                      format: { with: URI::MailTo::EMAIL_REGEXP }
-  end
+  validates :email,
+    presence: true,
+    length:  { maximum: 255 },
+    format:  { with: URI::MailTo::EMAIL_REGEXP },
+    uniqueness: { case_sensitive: false },
+    if: -> { provider.blank? }
 
   validates :password, presence: true, length: { minimum: 6 }, if: :password_required?
 
