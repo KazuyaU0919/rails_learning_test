@@ -7,7 +7,7 @@
     <!-- タイトル（常時表示） -->
     <%= link_to root_path, class: "font-semibold text-center md:text-left flex items-center gap-2" do %>
       <%= heroicon "rocket-launch", variant: :outline, options: { class: "w-6 h-6" } %>
-      <span>RailsLearningTest</span>
+      <span>Rails Learning Test</span>
     <% end %>
 
     <!-- === グローバルナビ＋ハンバーガー（右寄せ） === -->
@@ -31,7 +31,7 @@
 
       <!-- ハンバーガー：モバイルで表示 -->
       <button
-        class="p-2 rounded-lg hover:bg-slate-100 md:hidden lg:block"
+        class="p-2 rounded-lg hover:bg-slate-100 lg:block"
         data-action="click->modal#open"
         aria-label="メニューを開く">
         <%= heroicon "bars-3", options: { class: "w-6 h-6 text-slate-500" } %>
