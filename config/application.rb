@@ -18,6 +18,9 @@ module RailsLearningTest
     config.active_job.queue_adapter = :inline # or :sidekiq 等
     config.i18n.default_locale = :ja
     config.active_storage.variant_processor = :vips
+    config.time_zone = "Asia/Tokyo"
+    config.active_record.default_timezone = :utc
+    config.time_zone_aware_attributes = true
 
     config.generators do |g|
       g.test_framework :rspec,

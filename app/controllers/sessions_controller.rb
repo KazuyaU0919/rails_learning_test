@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
   before_action :require_guest!,  only: %i[new create]
   before_action :require_login!,  only: %i[destroy]
+  before_action :use_gray_bg
 
   def new; end
 
@@ -21,5 +22,11 @@ class SessionsController < ApplicationController
   def destroy
     reset_session
     redirect_to root_path, notice: "ログアウトしました"
+  end
+
+  private
+
+  def use_gray_bg
+    @body_bg = "bg-slate-50"
   end
 end

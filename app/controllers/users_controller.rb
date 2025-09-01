@@ -1,6 +1,7 @@
 # app/controllers/users_controller.rb
 class UsersController < ApplicationController
   before_action :require_guest!, only: %i[new create]
+  before_action :use_gray_bg
 
   def new
     @user = User.new
@@ -40,5 +41,9 @@ class UsersController < ApplicationController
 
     email = user.email.to_s.downcase
     User.where("lower(email) = ?", email).exists?
+  end
+
+  def use_gray_bg
+    @body_bg = "bg-slate-50"
   end
 end
