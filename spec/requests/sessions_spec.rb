@@ -1,8 +1,8 @@
 # spec/requests/sessions_spec.rb
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Sessions", type: :request do
-  let!(:user) { create(:user, email: "a@example.com", password: "secret123") }
+  let!(:user) { create(:user, email: "a@example.com", password: "secret123", password_confirmation: "secret123") }
 
   describe "GET /session/new" do
     it "200が返る" do
