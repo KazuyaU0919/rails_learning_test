@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params) # provider なし → 通常登録
+    @user = User.new(user_params)
 
     if @user.save
       session[:user_id] = @user.id
