@@ -97,7 +97,7 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install JS deps (linux/x64 only; drop wrong lock)
+      - name: Install JS deps (linux/x64 runner; ignore ARM lock & optional deps)
         env:
           NPM_CONFIG_AUDIT: 'false'
           NPM_CONFIG_FUND:  'false'
@@ -106,17 +106,17 @@ jobs:
         run: |
           set -e
 
-          if [ -f package-lock.json ] && grep -q 'arm64' package-lock.json; then
-            echo "::warning::package-lock.json contains arm64 entries; removing for linux/x64 install"
+          if [ -f package-lock.json ] && grep -q '"cpu": *\[\s*"arm64"\s*\]' package-lock.json || grep -q 'lightningcss-linux-arm64-gnu' package-lock.json; then
+            echo "::warning::package-lock.json contains arm64-specific entries; ignoring lock on linux/x64 runner"
             rm -f package-lock.json
           fi
 
-          if [ -f package-lock.json ]; then
-            echo "Using existing lock with npm ci (omit optional)…"
-            npm ci --omit=optional
+          if [ ! -f package-lock.json ]; then
+            echo "npm install for linux/x64 (no lock; omit optional)…"
+            npm i --no-package-lock --omit=optional --no-optional
           else
-            echo "No lock: installing for linux/x64 (omit optional)…"
-            npm i --no-package-lock --omit=optional
+            echo "npm ci using lock (omit optional)…"
+            npm ci --omit=optional --no-optional
           fi
 
       - name: Build CSS (Tailwind v4 via PostCSS)
