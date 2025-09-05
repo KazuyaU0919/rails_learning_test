@@ -96,13 +96,13 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install JS deps (no lock, no optional deps)
+      - name: Install JS deps (no lock; allow optional deps)
         env:
           NPM_CONFIG_FUND: 'false'
           NPM_CONFIG_AUDIT: 'false'
         run: |
           rm -f package-lock.json
-          npm i --no-package-lock --no-optional
+          npm i --no-package-lock
 
       - name: Build CSS (Tailwind v4 via PostCSS)
         run: npm run build:css
