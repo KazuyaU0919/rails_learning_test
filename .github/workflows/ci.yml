@@ -106,18 +106,15 @@ jobs:
         run: |
           set -e
 
-          # 1) lock が arm64 を含む＝他環境由来なら破棄して作り直す
           if [ -f package-lock.json ] && grep -q 'arm64' package-lock.json; then
             echo "::warning::package-lock.json contains arm64 entries; removing for linux/x64 install"
             rm -f package-lock.json
           fi
 
-          # 2) lock が残っていれば npm ci を試す（optional は省く）
           if [ -f package-lock.json ]; then
             echo "Using existing lock with npm ci (omit optional)…"
             npm ci --omit=optional
           else
-            # 3) lock が無ければ、現在の linux/x64 で解決してインストール
             echo "No lock: installing for linux/x64 (omit optional)…"
             npm i --no-package-lock --omit=optional
           fi
