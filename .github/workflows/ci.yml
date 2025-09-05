@@ -69,7 +69,6 @@ jobs:
       DB_HOST: 127.0.0.1
       DB_USER: postgres
       DB_PASSWORD: postgres
-      # Judge0 API 環境変数
       JUDGE0_BASE_URL: https://judge0-ce.p.rapidapi.com
       JUDGE0_RAPIDAPI_KEY: ${{ secrets.JUDGE0_RAPIDAPI_KEY }}
       JUDGE0_HOST_HEADER: judge0-ce.p.rapidapi.com
@@ -91,6 +90,23 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install JS deps (no lock, no optional deps)
+        env:
+          NPM_CONFIG_FUND: 'false'
+          NPM_CONFIG_AUDIT: 'false'
+        run: |
+          rm -f package-lock.json
+          npm i --no-package-lock --no-optional
+
+      - name: Build CSS (Tailwind v4 via PostCSS)
+        run: npm run build:css
 
       - name: Prepare DB
         run: bin/rails db:prepare
