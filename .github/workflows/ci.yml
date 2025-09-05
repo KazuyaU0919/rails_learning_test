@@ -97,27 +97,28 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install JS deps (linux/x64 runner; ignore ARM lock & optional deps)
+      - name: Install JS deps (make lock fit linux/x64, then ci)
         env:
+          NPM_CONFIG_FUND: 'false'
           NPM_CONFIG_AUDIT: 'false'
-          NPM_CONFIG_FUND:  'false'
-          npm_config_platform: linux
-          npm_config_arch: x64
         run: |
           set -e
 
-          if [ -f package-lock.json ] && grep -q '"cpu": *\[\s*"arm64"\s*\]' package-lock.json || grep -q 'lightningcss-linux-arm64-gnu' package-lock.json; then
-            echo "::warning::package-lock.json contains arm64-specific entries; ignoring lock on linux/x64 runner"
+          if [ -f package-lock.json ] && \
+             (grep -q '"cpu": *\[\s*"arm64"\s*\]' package-lock.json || \
+              grep -q 'lightningcss-linux-arm64-gnu' package-lock.json ); then
+            echo "::warning:: package-lock.json has arm64-specific entries; removing it on linux/x64 runner"
             rm -f package-lock.json
           fi
 
           if [ ! -f package-lock.json ]; then
-            echo "npm install for linux/x64 (no lock; omit optional)…"
-            npm i --no-package-lock --omit=optional --no-optional
-          else
-            echo "npm ci using lock (omit optional)…"
-            npm ci --omit=optional --no-optional
+            echo "No lock -> generating linux/x64 package-lock.json on runner…"
+            # ランナーのプラットフォームを明示（安全のため）
+            npm_config_platform=linux npm_config_arch=x64 npm install --package-lock-only
           fi
+
+          echo "Installing with npm ci (omit optional)…"
+          npm ci --omit=optional
 
       - name: Build CSS (Tailwind v4 via PostCSS)
         run: npm run build:css
