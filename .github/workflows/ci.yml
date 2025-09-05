@@ -92,6 +92,26 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install JS deps (npm ci if lockfile, otherwise npm i)
+        env:
+          NPM_CONFIG_FUND: 'false'
+          NPM_CONFIG_AUDIT: 'false'
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm i
+          fi
+
+      - name: Build CSS (Tailwind v4 via PostCSS)
+        run: npm run build:css
+
       - name: Prepare DB
         run: bin/rails db:prepare
 
