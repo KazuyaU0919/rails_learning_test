@@ -97,12 +97,21 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install JS deps
+      - name: Install JS deps (ci first, fallback to install without lock)
+        env:
+          NPM_CONFIG_AUDIT: 'false'
+          NPM_CONFIG_FUND: 'false'
         run: |
+          set -e
           if [ -f package-lock.json ]; then
-            npm ci
+            echo "Trying: npm ci --omit=optional"
+            if ! npm ci --omit=optional; then
+              echo "Falling back: remove lock and install for current platform"
+              rm -f package-lock.json
+              npm i --no-package-lock --omit=optional
+            fi
           else
-            npm i
+            npm i --no-package-lock --omit=optional
           fi
 
       - name: Build CSS (Tailwind v4 via PostCSS)
