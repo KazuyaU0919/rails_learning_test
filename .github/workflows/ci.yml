@@ -98,15 +98,15 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install JS deps (npm ci if lockfile, otherwise npm i)
+      - name: Install JS deps (omit optional to avoid platform-specific bins)
         env:
           NPM_CONFIG_FUND: 'false'
           NPM_CONFIG_AUDIT: 'false'
         run: |
           if [ -f package-lock.json ]; then
-            npm ci
+            npm ci --omit=optional
           else
-            npm i
+            npm i  --omit=optional
           fi
 
       - name: Build CSS (Tailwind v4 via PostCSS)
