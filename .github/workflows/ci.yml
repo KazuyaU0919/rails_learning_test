@@ -97,20 +97,28 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install JS deps (ci first, fallback to install without lock)
+      - name: Install JS deps (linux/x64 only; drop wrong lock)
         env:
           NPM_CONFIG_AUDIT: 'false'
-          NPM_CONFIG_FUND: 'false'
+          NPM_CONFIG_FUND:  'false'
+          npm_config_platform: linux
+          npm_config_arch: x64
         run: |
           set -e
+
+          # 1) lock が arm64 を含む＝他環境由来なら破棄して作り直す
+          if [ -f package-lock.json ] && grep -q 'arm64' package-lock.json; then
+            echo "::warning::package-lock.json contains arm64 entries; removing for linux/x64 install"
+            rm -f package-lock.json
+          fi
+
+          # 2) lock が残っていれば npm ci を試す（optional は省く）
           if [ -f package-lock.json ]; then
-            echo "Trying: npm ci --omit=optional"
-            if ! npm ci --omit=optional; then
-              echo "Falling back: remove lock and install for current platform"
-              rm -f package-lock.json
-              npm i --no-package-lock --omit=optional
-            fi
+            echo "Using existing lock with npm ci (omit optional)…"
+            npm ci --omit=optional
           else
+            # 3) lock が無ければ、現在の linux/x64 で解決してインストール
+            echo "No lock: installing for linux/x64 (omit optional)…"
             npm i --no-package-lock --omit=optional
           fi
 
