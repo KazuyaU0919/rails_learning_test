@@ -6,6 +6,22 @@ FactoryBot.define do
     password              { "secret123" }
     password_confirmation { "secret123" }
     admin { false }
+
+    # 編集者権限 ON
+    trait :editor do
+      editor { true }
+    end
+
+    # 凍結状態（理由付き）
+    trait :banned do
+      banned_at { Time.current }
+      ban_reason { "spam" }
+    end
+
+    # 管理者フラグ ON（github_user 以外でも使いたい時用）
+    trait :admin do
+      admin { true }
+    end
   end
 
   # ===== OAuth（Google）=====
