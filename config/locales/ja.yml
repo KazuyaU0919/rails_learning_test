@@ -23,8 +23,22 @@ ja:
       pre_code:
         title: "タイトル"
         body: "コードの説明"
+      book:
+        title: "タイトル"
+        description: "説明"
+        position: "並び順"
     models:
       pre_code: "PreCode"
+      book: "教本"
+    errors:
+      models:
+        book:
+          attributes:
+            position:
+              blank: "を入力してください"
+              not_a_number: "は数値で入力してください"
+              greater_than: "は%{count}より大きい値にしてください"
+              taken: "はすでに使用されています"
   helpers:
     submit:
       book_section:
