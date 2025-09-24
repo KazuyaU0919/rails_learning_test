@@ -5,6 +5,7 @@ ja:
       default: "%Y/%m/%d"
       short:   "%m/%d"
       long:    "%Y年%-m月%-d日(%a)"
+      ymd_hm: "%Y/%m/%d %H:%M"
   time:
     formats:
       default: "%Y/%m/%d %H:%M"
@@ -44,6 +45,8 @@ ja:
       book_section:
         create: "作成する"
         update: "更新する"
+      user:
+        update: "更新"
   errors:
     messages:
       blank: "を入力してください"

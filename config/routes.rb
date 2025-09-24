@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   resource  :session, only: %i[new create destroy]     # ログイン/ログアウト
   resources :password_resets, only: %i[new create edit update]  # パス再設定用
 
+  # ユーザープロフィール
+  resource :profile, only: %i[show edit update]
+
   # PreCode機能
   concern :paginatable do
     # /pre_codes/page/2 → index の2ページ目に到達
@@ -44,11 +47,6 @@ Rails.application.routes.draw do
 
   # 管理画面
   namespace :admin do
-    get "pre_codes/index"
-    get "pre_codes/show"
-    get "pre_codes/edit"
-    get "pre_codes/update"
-    get "pre_codes/destroy"
     root "dashboards#index"
 
     resource  :session,   only: %i[new create destroy]
