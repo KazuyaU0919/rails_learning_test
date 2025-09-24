@@ -16,7 +16,9 @@ Rails.application.routes.draw do
   resources :password_resets, only: %i[new create edit update]  # パス再設定用
 
   # ユーザープロフィール
-  resource :profile, only: %i[show edit update]
+  resource :profile, only: %i[show edit update] do
+    post :revoke_remember
+  end
 
   # PreCode機能
   concern :paginatable do
