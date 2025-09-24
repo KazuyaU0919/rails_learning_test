@@ -44,11 +44,17 @@ Rails.application.routes.draw do
 
   # 管理画面
   namespace :admin do
+    get "pre_codes/index"
+    get "pre_codes/show"
+    get "pre_codes/edit"
+    get "pre_codes/update"
+    get "pre_codes/destroy"
     root "dashboards#index"
 
     resource  :session,   only: %i[new create destroy]
     resources :books
     resources :book_sections, except: %i[show]
+    resources :pre_codes, only: %i[index show edit update destroy]
     resources :users, only: [ :index, :destroy ] do
       member do
         patch :toggle_editor
