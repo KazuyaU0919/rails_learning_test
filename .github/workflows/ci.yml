@@ -48,32 +48,31 @@ jobs:
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
-  # --- RSpec (Minitest は使わない) ---
+  # --- RSpec ---
   rspec:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U postgres -h localhost"
-          --health-interval=10s --health-timeout=5s --health-retries=5
-
+    # Dockerサービスは使わない。DB接続は DATABASE_URL に統一
     env:
       RAILS_ENV: test
-      DB_HOST: 127.0.0.1
-      DB_USER: postgres
-      DB_PASSWORD: postgres
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/app_test
       JUDGE0_BASE_URL: https://judge0-ce.p.rapidapi.com
       JUDGE0_RAPIDAPI_KEY: ${{ secrets.JUDGE0_RAPIDAPI_KEY }}
       JUDGE0_HOST_HEADER: judge0-ce.p.rapidapi.com
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      # ← ここで VM に PostgreSQL をインストール＆起動
+      - name: Set up PostgreSQL
+        uses: ankane/setup-postgres@v2
+        with:
+          postgres-version: 15
+          database: app_test
+          username: postgres
+          password: postgres
+
       - name: Install system packages
         run: |
           sudo apt-get update
@@ -81,9 +80,6 @@ jobs:
             build-essential git pkg-config libpq-dev libyaml-dev \
             libvips libvips-dev
           ldconfig -p | grep libvips || true
-
-      - name: Checkout code
-        uses: actions/checkout@v5
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
