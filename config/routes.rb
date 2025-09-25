@@ -20,6 +20,9 @@ Rails.application.routes.draw do
     post :revoke_remember
   end
 
+  # ブックマーク機能
+  resources :bookmarks, only: %i[create destroy]
+
   # PreCode機能
   concern :paginatable do
     # /pre_codes/page/2 → index の2ページ目に到達

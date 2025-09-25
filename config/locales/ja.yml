@@ -50,3 +50,5 @@ ja:
   errors:
     messages:
       blank: "を入力してください"
+  bookmarks:
+    limit_reached: "300件以上のブックマーク登録はできません"
