@@ -52,3 +52,6 @@ ja:
       blank: "を入力してください"
   bookmarks:
     limit_reached: "300件以上のブックマーク登録はできません"
+  search:
+    no_items: "候補はありません"
+    error: "通信エラー"
