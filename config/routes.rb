@@ -33,6 +33,9 @@ Rails.application.routes.draw do
   resources :likes,      only: %i[create destroy]
   resources :used_codes, only: %i[create]
 
+  # タグ
+  resources :tags, only: %i[index show]
+
   # Code Editor
   root "editor#index"
   get  "/editor", to: "editor#index",  as: :editor
@@ -55,11 +58,16 @@ Rails.application.routes.draw do
     resources :books
     resources :book_sections, except: %i[show]
     resources :pre_codes, only: %i[index show edit update destroy]
+
     resources :users, only: [ :index, :destroy ] do
       member do
         patch :toggle_editor
         patch :toggle_ban
       end
+    end
+
+    resources :tags, only: %i[index destroy] do
+      post :merge, on: :collection
     end
   end
 
