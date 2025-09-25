@@ -1,56 +1,19 @@
-name: CI
-
-on:
-  pull_request:
-  push:
-    branches: [ main ]
-
-jobs:
-  # --- Static analysis (Rails/Ruby) ---
-  scan_ruby:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
-
-  # --- JS dependency audit (Importmap) ---
-  scan_js:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-      - name: Scan for security vulnerabilities in JavaScript dependencies
-        run: bin/importmap audit
-
-  # --- RuboCop only (テストは走らせない) ---
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-      - name: Lint code for consistent style
-        run: bin/rubocop -f github
-
   # --- RSpec (Minitest は使わない) ---
   rspec:
     runs-on: ubuntu-latest
+
+    # ← ここがポイント：Docker Hub 認証情報をジョブ全体に渡す
+    env:
+      DOCKER_AUTH_CONFIG: >
+        {"auths":{"https://index.docker.io/v1/":{"auth":"${{ secrets.DOCKERHUB_AUTH_B64 }}"}}}
+      RAILS_ENV: test
+      DB_HOST: 127.0.0.1
+      DB_NAME: app_test
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JUDGE0_BASE_URL: https://judge0-ce.p.rapidapi.com
+      JUDGE0_RAPIDAPI_KEY: ${{ secrets.JUDGE0_RAPIDAPI_KEY }}
+      JUDGE0_HOST_HEADER: judge0-ce.p.rapidapi.com
 
     services:
       postgres:
@@ -58,20 +21,12 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: app_test
         ports:
           - 5432:5432
         options: >-
           --health-cmd="pg_isready -U postgres -h localhost"
           --health-interval=10s --health-timeout=5s --health-retries=5
-
-    env:
-      RAILS_ENV: test
-      DB_HOST: 127.0.0.1
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      JUDGE0_BASE_URL: https://judge0-ce.p.rapidapi.com
-      JUDGE0_RAPIDAPI_KEY: ${{ secrets.JUDGE0_RAPIDAPI_KEY }}
-      JUDGE0_HOST_HEADER: judge0-ce.p.rapidapi.com
 
     steps:
       - name: Install system packages

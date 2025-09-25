@@ -3,25 +3,44 @@
 <h1 class="text-xl font-semibold text-slate-900 mb-4">PreCode 管理</h1>
 
 <%= form_with url: admin_pre_codes_path, method: :get, local: true, class: "mb-6" do %>
-  <div class="flex flex-wrap gap-3">
-    <%= text_field_tag :title, params[:title], placeholder: "タイトルを部分一致検索",
-        class: "w-64 rounded-md border border-slate-300 px-3 py-2 text-sm" %>
-    <%= text_field_tag :description, params[:description], placeholder: "説明を部分一致検索",
-        class: "w-72 rounded-md border border-slate-300 px-3 py-2 text-sm" %>
-    <%= text_field_tag :user, params[:user], placeholder: "ユーザー名/メール",
-        class: "w-64 rounded-md border border-slate-300 px-3 py-2 text-sm" %>
+  <div class="flex flex-wrap items-end gap-2 md:gap-3">
 
-    <% if PreCode.reflect_on_association(:tags) %>
+    <%= text_field_tag :title, params[:title],
+          placeholder: "タイトルを部分一致検索",
+          class: "min-w-[12rem] w-64 md:w-72 rounded-md border ring-1 ring-slate-300 px-3 py-2 text-sm" %>
+
+    <%= text_field_tag :description, params[:description],
+          placeholder: "説明を部分一致検索",
+          class: "min-w-[12rem] w-72 rounded-md border ring-1 ring-slate-300 px-3 py-2 text-sm" %>
+
+    <%= text_field_tag :user, params[:user],
+          placeholder: "ユーザー名／メール",
+          class: "min-w-[12rem] w-64 rounded-md border ring-1 ring-slate-300 px-3 py-2 text-sm" %>
+
+    <%# --- タグ（複数選択） --- %>
+    <div class="flex items-end gap-2">
+      <label class="text-xs text-slate-500 mb-2">タグ</label>
       <%= select_tag :tag_ids,
-          options_from_collection_for_select(Tag.order(:name), :id, :name, Array(params[:tag_ids])),
-          multiple: true, class: "min-w-[12rem] rounded-md border border-slate-300 px-3 py-2 text-sm" %>
-    <% end %>
+            options_from_collection_for_select(Tag.order(:name), :id, :name, Array(params[:tag_ids]).map(&:to_i)),
+            multiple: true,
+            size: 1,
+            class: "min-w-[14rem] md:w-80 rounded-md border ring-1 ring-slate-300 px-2 py-2 text-sm" %>
+    </div>
+
+    <div class="flex-1"></div>
 
     <%= select_tag :sort,
-        options_for_select([["作成日(新しい順)", ""], ["いいね数", "likes"], ["利用数", "used"], ["タイトル昇順", "title"]], params[:sort]),
-        class: "rounded-md border border-slate-300 px-3 py-2 text-sm" %>
+          options_for_select(
+            [["作成日(新しい順)", ""],
+             ["いいね数", "likes"],
+             ["利用数", "used"],
+             ["タイトル昇順", "title"]],
+            params[:sort]
+          ),
+          class: "rounded-md border ring-1 ring-slate-300 px-3 py-2 text-sm" %>
 
-    <%= submit_tag "検索", class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800" %>
+    <%= submit_tag "検索",
+          class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800" %>
   </div>
 <% end %>
 
