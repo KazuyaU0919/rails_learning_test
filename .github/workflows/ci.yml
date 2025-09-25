@@ -1,10 +1,51 @@
-  # --- RSpec (Minitest は使わない) ---
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  # --- Static analysis (Rails/Ruby) ---
+  scan_ruby:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+      - run: bin/brakeman --no-pager
+
+  # --- JS dependency audit (Importmap) ---
+  scan_js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+      - run: bin/importmap audit
+
+  # --- RuboCop only (テストは走らせない) ---
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+      - run: bin/rubocop -f github
+
+  # --- RSpec ---
   rspec:
     runs-on: ubuntu-latest
 
-    # ← ここがポイント：Docker Hub 認証情報をジョブ全体に渡す
+    # ← サービスコンテナの pull より前に渡す必要があるため job レベルに置く
     env:
-      DOCKER_AUTH_CONFIG: >
+      DOCKER_AUTH_CONFIG: >-
         {"auths":{"https://index.docker.io/v1/":{"auth":"${{ secrets.DOCKERHUB_AUTH_B64 }}"}}}
       RAILS_ENV: test
       DB_HOST: 127.0.0.1
@@ -22,8 +63,7 @@
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: app_test
-        ports:
-          - 5432:5432
+        ports: [ '5432:5432' ]
         options: >-
           --health-cmd="pg_isready -U postgres -h localhost"
           --health-interval=10s --health-timeout=5s --health-retries=5
@@ -37,29 +77,19 @@
             libvips libvips-dev
           ldconfig -p | grep libvips || true
 
-      - name: Checkout code
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install JS deps
-        run: npm ci
-
-      - name: Build CSS (Tailwind v4 via PostCSS)
-        run: npm run build:css
-
-      - name: Prepare DB
-        run: bin/rails db:prepare
-
-      - name: Run RSpec
-        run: bundle exec rspec
+      - run: npm ci
+      - run: npm run build:css
+      - run: bin/rails db:prepare
+      - run: bundle exec rspec
