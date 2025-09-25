@@ -4,9 +4,11 @@ class CodeLibrariesController < ApplicationController
   def index
     base = PreCode.except_user(current_user&.id)
     @q = base.ransack(params[:q])
-
-    # 検索結果
     rel = @q.result
+
+    if params[:only_bookmarked].present? && logged_in?
+      rel = rel.joins(:bookmarks).where(bookmarks: { user_id: current_user.id })
+    end
 
     # ソートキー（popular / used / newest）。デフォルト popular
     sort_key = params[:sort].presence || "popular"
