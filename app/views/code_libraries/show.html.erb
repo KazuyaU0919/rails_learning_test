@@ -53,8 +53,10 @@
       </div>
 
       <div class="hidden rounded-xl ring-1 ring-slate-300 bg-white px-4 py-3"
-           data-reveal-target="content">
-        <%= raw @pre_code.hint %>
+          data-reveal-target="content">
+        <%= sanitize(@pre_code.hint,
+                    tags: %w[b i em strong code pre br p ul ol li a],
+                    attributes: %w[href]) %>
       </div>
     </section>
   <% end %>
@@ -87,8 +89,10 @@
 
       <% if @pre_code.answer.present? %>
         <div class="hidden rounded-xl ring-1 ring-slate-300 bg-white px-4 py-3"
-             data-reveal-target="content">
-          <%= raw @pre_code.answer %>
+            data-reveal-target="content">
+          <%= sanitize(@pre_code.answer,
+                      tags: %w[b i em strong code pre br p ul ol li a],
+                      attributes: %w[href]) %>
         </div>
       <% end %>
 
@@ -96,7 +100,7 @@
         <div class="hidden" data-reveal-target="content">
           <style>.cm-editor,.cm-scroller{background:transparent!important}</style>
           <div data-controller="code-view" data-code-view-theme-value="light"
-               class="rounded-xl ring-1 ring-slate-300 overflow-hidden">
+              class="rounded-xl ring-1 ring-slate-300 overflow-hidden">
             <textarea data-code-view-target="field" class="hidden"><%= @pre_code.answer_code %></textarea>
             <div data-code-view-target="mount" class="w-full min-h-[120px]"></div>
           </div>
