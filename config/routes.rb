@@ -54,6 +54,17 @@ Rails.application.routes.draw do
     resources :sections, only: :show, controller: :book_sections
   end
 
+  # クイズ機能
+  resources :quizzes, only: %i[index show] do
+    resources :sections, only: %i[index show], module: :quizzes do
+      resources :questions, only: %i[show], module: :sections do
+        post :answer, on: :member
+        get  :answer_page, on: :member
+      end
+      get :result, on: :member
+    end
+  end
+
   # 管理画面
   namespace :admin do
     root "dashboards#index"
@@ -62,6 +73,9 @@ Rails.application.routes.draw do
     resources :books
     resources :book_sections, except: %i[show]
     resources :pre_codes, only: %i[index show edit update destroy]
+    resources :quizzes
+    resources :quiz_sections
+    resources :quiz_questions
 
     resources :users, only: [ :index, :destroy ] do
       member do
