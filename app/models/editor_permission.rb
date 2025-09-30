@@ -2,15 +2,21 @@
 class EditorPermission < ApplicationRecord
   belongs_to :user
 
+  # このモデルで許可する対象タイプ（ホワイトリスト）
+  VALID_TARGET_TYPES = %w[BookSection QuizQuestion].freeze
+
   # sub_editor のみ（サイト全体編集は users.editor を使う）
   enum :role, { sub_editor: 0 }, prefix: true
 
-  validates :target_type, presence: true
+  validates :target_type, presence: true, inclusion: { in: VALID_TARGET_TYPES }
   validates :target_id,   presence: true, numericality: { only_integer: true }
 
   # ---- 表示用ヘルパ（モデル側でも呼べるように） ----
   def target_record
     return nil if target_type.blank? || target_id.blank?
+    return nil unless VALID_TARGET_TYPES.include?(target_type)
+
+    # ここは constantize の前にホワイトリストで必ず絞り込む
     target_type.constantize.find_by(id: target_id)
   rescue NameError
     nil
