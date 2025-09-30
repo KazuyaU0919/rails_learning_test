@@ -51,13 +51,13 @@ Rails.application.routes.draw do
 
   # Rails Books
   resources :books, only: %i[index show] do
-    resources :sections, only: :show, controller: :book_sections
+    resources :sections, only: %i[show edit update], controller: :book_sections
   end
 
   # クイズ機能
   resources :quizzes, only: %i[index show] do
     resources :sections, only: %i[index show], module: :quizzes do
-      resources :questions, only: %i[show], module: :sections do
+      resources :questions, only: %i[show edit update], module: :sections do
         post :answer, on: :member
         get  :answer_page, on: :member
       end
@@ -77,6 +77,15 @@ Rails.application.routes.draw do
     resources :quiz_sections
     resources :quiz_questions
 
+    resources :editor_permissions do
+      collection do
+        get  :bulk_new
+        post :bulk_create
+        get  :describe_target
+        get  :user_status
+      end
+    end
+
     resources :users, only: [ :index, :destroy ] do
       member do
         patch :toggle_editor
@@ -86,6 +95,13 @@ Rails.application.routes.draw do
 
     resources :tags, only: %i[index destroy] do
       post :merge, on: :collection
+    end
+
+    resources :versions, only: %i[index show destroy] do
+      post :revert, on: :member
+      collection do
+        delete :bulk_destroy
+      end
     end
   end
 
