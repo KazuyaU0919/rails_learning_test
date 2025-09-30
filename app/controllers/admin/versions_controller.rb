@@ -2,6 +2,9 @@
 class Admin::VersionsController < Admin::BaseController
   layout "admin"
 
+  ALLOWED_ITEM_TYPES = %w[BookSection QuizQuestion].freeze
+
+
   def index
     versions = PaperTrail::Version.order(created_at: :desc)
     versions = versions.where(item_type: params[:item_type]) if params[:item_type].present?
@@ -19,8 +22,11 @@ class Admin::VersionsController < Admin::BaseController
     record  = safe_reify(version)
 
     if record.nil?
-      model = version.item_type.constantize.find_by(id: version.item_id)
-      model&.destroy!
+      # create の巻き戻し = 現在存在するレコードを削除
+      model_klass = safe_model_for_item_type(version.item_type)
+      if model_klass
+        model_klass.find_by(id: version.item_id)&.destroy!
+      end
       redirect_to admin_versions_path(item_type: version.item_type, item_id: version.item_id),
                   notice: "この作成を取り消しました（削除）"
       return
@@ -92,5 +98,11 @@ class Admin::VersionsController < Admin::BaseController
     if ActiveRecord.respond_to?(:yaml_column_permitted_classes)
       ActiveRecord.yaml_column_permitted_classes |= permitted
     end
+  end
+
+  def safe_model_for_item_type(item_type)
+    type = item_type.to_s
+    return nil unless ALLOWED_ITEM_TYPES.include?(type)
+    type.safe_constantize
   end
 end
