@@ -51,7 +51,8 @@ class Admin::EditorPermissionsController < Admin::BaseController
   end
 
   def bulk_create
-    raw      = params.require(:editor_permission).permit(:user_id, :target_type, :role)
+    # :role は受け取らない（サーバ側で固定）
+    raw      = params.require(:editor_permission).permit(:user_id, :target_type)
     user_id  = Integer(raw[:user_id])
     type     = raw[:target_type].to_s
 
