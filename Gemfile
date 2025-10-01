@@ -45,7 +45,7 @@ gem "gretel"
 gem "heroicon-rails"
 
 # 変更履歴管理（バージョン管理・復元・監査ログ）
-gem "paper_trail", "~> 14.0"
+gem "paper_trail", "~> 16.0"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
