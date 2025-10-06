@@ -38,7 +38,9 @@ Rails.application.routes.draw do
   resources :used_codes, only: %i[create]
 
   # タグ
-  resources :tags, only: %i[index show]
+  resources :tags, only: [ :index, :show, :create ] do
+    collection { get :popular }
+  end
 
   # Code Editor
   root "editor#index"

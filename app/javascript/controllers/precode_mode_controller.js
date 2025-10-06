@@ -51,7 +51,7 @@ export default class extends Controller {
     this.element
       .querySelectorAll('[data-controller~="autosize"]')
       .forEach(el => el.dispatchEvent(new Event("autosize:refresh")))
-    
+
     // トグルボタン表示
     if (this.hasToggleTarget) {
       this.toggleTarget.textContent = quiz ? "通常モードに戻す" : "問題モードにする"
