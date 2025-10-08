@@ -107,6 +107,11 @@ Rails.application.routes.draw do
     end
   end
 
+  # Letter_opener
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
   # OmniAuth
   get "/auth/:provider", to: "omni_auth#passthru", as: :auth,
                          constraints: { provider: /(google_oauth2|github)/ }
