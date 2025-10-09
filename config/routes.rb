@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   # ユーザープロフィール
   resource :profile, only: %i[show edit update] do
     post :revoke_remember
+    post :password_setup
   end
 
   # ブックマーク機能
